@@ -21,6 +21,8 @@ find_package(Qt5Core REQUIRED)
 add_executable(VenusChatServer
   main.cpp
   zmq.hpp
+  Structs.h
+  Enums.h
   chatservercontroller.cpp
   chatservercontroller.h
   client.cpp
