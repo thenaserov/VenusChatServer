@@ -15,7 +15,8 @@ void ChatServerController::InitSockets()
 
 void ChatServerController::StartJoinThread()
 {
-    if(join_listener_thread_.joinable())
+    std::cout << "Here" << std::endl;
+    if(!join_listener_thread_.joinable() && !kill_join_thread_)
     {
         join_listener_thread_ = std::thread(ThreadChatServer);
         join_listener_thread_.join();
@@ -24,11 +25,14 @@ void ChatServerController::StartJoinThread()
 
 void ChatServerController::StopJoinThread()
 {
-
+    if(!kill_join_thread_)
+    {
+        kill_join_thread_ = true;
+    }
 }
 
 void ChatServerController::ThreadChatServer()
 {
-    std::cout << "Start join mechanism thread\n";
+    std::cout << "Starting thread!" << std::endl;
 }
 

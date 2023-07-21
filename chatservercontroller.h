@@ -15,7 +15,7 @@ public:
 
 private:
     std::thread join_listener_thread_;
-    bool kill_join_thread_;
+    bool kill_join_thread_{false};
     // zmq sockets and context
     zmq::context_t context;
     zmq::socket_t socket_join_request_from_client;
