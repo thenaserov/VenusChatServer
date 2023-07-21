@@ -2,6 +2,7 @@
 #define CHATSERVERCONTROLLER_H
 
 #include "zmq.hpp"
+#include "Enums.h"
 #include <thread>
 #include <iostream>
 
