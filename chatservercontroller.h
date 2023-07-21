@@ -3,6 +3,7 @@
 
 #include "zmq.hpp"
 #include <thread>
+#include <iostream>
 
 class ChatServerController
 {
@@ -19,6 +20,7 @@ private:
     zmq::context_t context;
     zmq::socket_t socket_join_request_from_client;
     zmq::socket_t socket_join_requset_answer;
+    static void ThreadChatServer();
 
 protected:
 };
