@@ -29,5 +29,7 @@ add_executable(VenusChatServer
   client.h
   clientfactory.cpp
   clientfactory.h
+  tools.cpp
+  tools.h
 )
 target_link_libraries(VenusChatServer Qt5::Core ${ZMQ_LIBRARIES})

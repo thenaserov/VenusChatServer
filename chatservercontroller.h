@@ -3,6 +3,7 @@
 
 #include "zmq.hpp"
 #include "Enums.h"
+#include "tools.h"
 #include <thread>
 #include <iostream>
 
@@ -20,7 +21,7 @@ private:
     // zmq sockets and context
     zmq::context_t context;
     static zmq::socket_t socket_publish_for_clients_;
-    static zmq::socket_t socket_pull_from_clients;
+    static zmq::socket_t socket_pull_from_clients_;
     static void ThreadChatServerJoinListener();
 
 protected:
