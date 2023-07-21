@@ -9,8 +9,11 @@ ChatServerController::ChatServerController()
 
 void ChatServerController::InitSockets()
 {
-    socket_join_request_from_client = zmq::socket_t(context, ZMQ_PUB);
-    socket_join_request_from_client.bind("tcp://*:43434");
+    socket_pull_from_clients_ = zmq::socket_t(context, ZMQ_PULL);
+    socket_pull_from_clients_.bind("tcp://*:43434");
+
+    socket_publish_for_clients_ = zmq::socket_t(context ,ZMQ_PUB);
+    socket_publish_for_clients_.bind("tcp://*:43435");
 }
 
 void ChatServerController::StartJoinThread()
@@ -37,7 +40,7 @@ void ChatServerController::ThreadChatServerJoinListener()
     while(kill_join_thread_ == false)
     {
         CLIENT_COMMANDS command;
-        int recv_res = zmq_recv(socket_join_request_from_client, &command, sizeof(command), ZMQ_RCVMORE);
+        int recv_res = zmq_recv(socket_pull_from_clients_, &command, sizeof(command), ZMQ_RCVMORE);
 
         if(recv_res == -1)
             continue;
@@ -46,16 +49,18 @@ void ChatServerController::ThreadChatServerJoinListener()
             case JOIN_REQUEST:
             {
             int name_size;
-            zmq_recv(socket_join_request_from_client, &name_size, sizeof(command), ZMQ_RCVMORE);
-
-            char * name;
-            zmq_recv(socket_join_request_from_client, name, sizeof(name), ZMQ_DONTWAIT);
-                break;
+            zmq_recv(socket_pull_from_clients_, &name_size, sizeof(command), ZMQ_RCVMORE);
+            char name[name_size];
+            zmq_recv(socket_pull_from_clients_, name, sizeof(name), ZMQ_DONTWAIT);
+            break;
             }
             case SEND_MESSAGE:
             {
-
-                break;
+            int message_length;
+            zmq_recv(socket_pull_from_clients_, &message_length, sizeof(int), ZMQ_RCVMORE);
+            char message[message_length];
+            zmq_recv(socket_pull_from_clients_, message, sizeof (message), ZMQ_DONTWAIT);
+            break;
             }
         }
     }
