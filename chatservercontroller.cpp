@@ -9,8 +9,8 @@ ChatServerController::ChatServerController()
 
 void ChatServerController::InitSockets()
 {
-    socket_pull_from_clients_ = zmq::socket_t(context, ZMQ_PULL);
-    socket_pull_from_clients_.bind("tcp://*:43434");
+    socket_subscribe_to_clients_ = zmq::socket_t(context, ZMQ_SUB);
+    socket_subscribe_to_clients_.bind("tcp://*:43434");
 
     socket_publish_for_clients_ = zmq::socket_t(context ,ZMQ_PUB);
     socket_publish_for_clients_.bind("tcp://*:43435");
