@@ -40,7 +40,7 @@ void ChatServerController::ThreadChatServerJoinListener()
     while(kill_join_thread_ == false)
     {
         CLIENT_COMMANDS command;
-        int recv_res = zmq_recv(socket_pull_from_clients_, &command, sizeof(command), ZMQ_RCVMORE);
+        int recv_res = zmq_recv(socket_subscribe_to_clients_, &command, sizeof(command), ZMQ_RCVMORE);
 
         if(recv_res == -1)
             continue;
@@ -49,9 +49,9 @@ void ChatServerController::ThreadChatServerJoinListener()
             case JOIN_REQUEST:
             {
             int name_size;
-            zmq_recv(socket_pull_from_clients_, &name_size, sizeof(command), ZMQ_RCVMORE);
+            zmq_recv(socket_subscribe_to_clients_, &name_size, sizeof(command), ZMQ_RCVMORE);
             char name[name_size];
-            zmq_recv(socket_pull_from_clients_, name, sizeof(name), ZMQ_DONTWAIT);
+            zmq_recv(socket_subscribe_to_clients_, name, sizeof(name), ZMQ_DONTWAIT);
             std::string join = name;
             join.append(" joined!");
             int size = join.length();
@@ -63,9 +63,9 @@ void ChatServerController::ThreadChatServerJoinListener()
             case SEND_MESSAGE:
             {
             int message_length;
-            zmq_recv(socket_pull_from_clients_, &message_length, sizeof(int), ZMQ_RCVMORE);
+            zmq_recv(socket_subscribe_to_clients_, &message_length, sizeof(int), ZMQ_RCVMORE);
             char message[message_length];
-            zmq_recv(socket_pull_from_clients_, message, sizeof (message), ZMQ_DONTWAIT);
+            zmq_recv(socket_subscribe_to_clients_, message, sizeof (message), ZMQ_DONTWAIT);
             zmq_send(socket_publish_for_clients_, message, sizeof(message), ZMQ_DONTWAIT);
             break;
             }
