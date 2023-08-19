@@ -17,12 +17,12 @@ public:
 
 private:
     std::thread join_listener_thread_;
-    static bool kill_join_thread_{true};
+    bool kill_join_thread_{true};
     // zmq sockets and context
     zmq::context_t context;
-    static zmq::socket_t socket_publish_for_clients_;
-    static zmq::socket_t socket_pull_from_clients_;
-    static void ThreadChatServerJoinListener();
+    zmq::socket_t socket_publish_for_clients_;
+    zmq::socket_t socket_pull_from_clients_;
+    void ThreadChatServerJoinListener();
 
 protected:
 };

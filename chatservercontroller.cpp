@@ -21,7 +21,7 @@ void ChatServerController::StartJoinThread()
     std::cout << "Here" << std::endl;
     if(!join_listener_thread_.joinable() && kill_join_thread_)
     {
-        join_listener_thread_ = std::thread(ThreadChatServerJoinListener);
+        join_listener_thread_ = std::thread(&ChatServerController::ThreadChatServerJoinListener, this);
         join_listener_thread_.join();
     }
 }
